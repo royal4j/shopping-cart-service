@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CheckoutServiceTest {
 
@@ -20,50 +20,50 @@ class CheckoutServiceTest {
 
     @Test
     void shouldCalculateTotalForOnlyApples() {
-        List<String> items = List.of("Apple", "Apple");
+        //Given
+        List<Item> items = List.of(Item.APPLE, Item.APPLE);
 
+        //When
         BigDecimal total = checkoutService.calculateTotal(items);
 
+        //Then
         assertEquals(new BigDecimal("1.20"), total);
     }
 
     @Test
     void shouldCalculateTotalForOnlyOranges() {
-        List<String> items = List.of("Orange", "Orange", "Orange");
+        //Given
+        List<Item> items = List.of(Item.ORANGE, Item.ORANGE, Item.ORANGE);
 
+        //When
         BigDecimal total = checkoutService.calculateTotal(items);
 
+        //Then
         assertEquals(new BigDecimal("0.75"), total);
     }
 
     @Test
     void shouldCalculateTotalForMultipleItems() {
-        List<String> items = List.of("Apple", "Apple", "Orange", "Apple");
+        //Given
+        List<Item> items = List.of(Item.APPLE, Item.APPLE, Item.ORANGE, Item.APPLE);
 
+        //When
         BigDecimal total = checkoutService.calculateTotal(items);
 
+        //Then
         assertEquals(new BigDecimal("2.05"), total);
     }
 
     @Test
     void shouldReturnZeroForEmptyCart() {
-        CheckoutService checkoutService = new CheckoutService();
-        List<String> items = List.of();
+        //Given
+        List<Item> emptyList = emptyList();
 
-        BigDecimal total = checkoutService.calculateTotal(items);
+        //When
+        BigDecimal total = checkoutService.calculateTotal(emptyList);
 
+        //Then
         assertEquals(BigDecimal.ZERO, total);
     }
 
-    @Test
-    void shouldThrowExceptionForUnknownItem() {
-        List<String> items = List.of("Apple", "Banana");
-
-        Exception exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> checkoutService.calculateTotal(items)
-        );
-
-        assertEquals("Unknown item: Banana", exception.getMessage());
-    }
 }
