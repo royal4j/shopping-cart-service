@@ -18,17 +18,17 @@ public class CheckoutService {
     }
 
     private BigDecimal calculateAppleTotal(long quantity) {
-        long pairs = quantity / 2;
-        long singles = quantity % 2;
-        long payableApples = pairs + singles;
+        final long pairs = quantity / 2;
+        final long singles = quantity % 2;
+        final long payableApples = pairs + singles;
 
         return Item.APPLE.getPrice().multiply(BigDecimal.valueOf(payableApples));
     }
 
     private BigDecimal calculateOrangeTotal(long quantity) {
-        long setsOfThree = quantity / 3;
-        long remainder = quantity % 3;
-        long payableOranges = (setsOfThree * 2) + remainder;
+        final long setsOfThree = quantity / 3;
+        final long remainder = quantity % 3;
+        final long payableOranges = (setsOfThree * 2) + remainder;
 
         return Item.ORANGE.getPrice().multiply(BigDecimal.valueOf(payableOranges));
     }
