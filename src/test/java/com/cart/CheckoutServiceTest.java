@@ -19,51 +19,77 @@ class CheckoutServiceTest {
     }
 
     @Test
-    void shouldCalculateTotalForOnlyApples() {
-        //Given
+    void totalForTwoApplesShouldReflectBuyOneGetOneFree() {
         List<Item> items = List.of(Item.APPLE, Item.APPLE);
 
-        //When
         BigDecimal total = checkoutService.calculateTotal(items);
 
-        //Then
+        assertEquals(new BigDecimal("0.60"), total);
+    }
+
+    @Test
+    void totalForFourApplesShouldApplyOfferTwice() {
+        List<Item> items = List.of(Item.APPLE, Item.APPLE, Item.APPLE, Item.APPLE);
+
+        BigDecimal total = checkoutService.calculateTotal(items);
+
         assertEquals(new BigDecimal("1.20"), total);
     }
 
     @Test
-    void shouldCalculateTotalForOnlyOranges() {
-        //Given
-        List<Item> items = List.of(Item.ORANGE, Item.ORANGE, Item.ORANGE);
+    void totalForThreeApplesShouldApplyOfferAndChargeOne() {
+        List<Item> items = List.of(Item.APPLE, Item.APPLE, Item.APPLE);
 
-        //When
         BigDecimal total = checkoutService.calculateTotal(items);
 
-        //Then
-        assertEquals(new BigDecimal("0.75"), total);
+        assertEquals(new BigDecimal("1.20"), total);
     }
 
     @Test
-    void shouldCalculateTotalForMultipleItems() {
-        //Given
-        List<Item> items = List.of(Item.APPLE, Item.APPLE, Item.ORANGE, Item.APPLE);
+    void totalForThreeOrangesShouldChargeForTwoOnly() {
+        List<Item> items = List.of(Item.ORANGE, Item.ORANGE, Item.ORANGE);
 
-        //When
         BigDecimal total = checkoutService.calculateTotal(items);
 
-        //Then
-        assertEquals(new BigDecimal("2.05"), total);
+        assertEquals(new BigDecimal("0.50"), total);
+    }
+
+    @Test
+    void totalForSixOrangesShouldApplyOfferTwice() {
+        List<Item> items = List.of(Item.ORANGE, Item.ORANGE, Item.ORANGE,
+                Item.ORANGE, Item.ORANGE, Item.ORANGE);
+
+        BigDecimal total = checkoutService.calculateTotal(items);
+
+        assertEquals(new BigDecimal("1.00"), total);
+    }
+
+    @Test
+    void totalForFiveOrangesShouldApplyOfferOnceAndChargeTwo() {
+        List<Item> items = List.of(Item.ORANGE, Item.ORANGE, Item.ORANGE, Item.ORANGE, Item.ORANGE);
+
+        BigDecimal total = checkoutService.calculateTotal(items);
+
+        assertEquals(new BigDecimal("1.00"), total);
+    }
+
+    @Test
+    void totalForThreeApplesAndThreeOrangesShouldApplyBothOffers() {
+        List<Item> items = List.of(Item.APPLE, Item.APPLE, Item.APPLE,
+                Item.ORANGE, Item.ORANGE, Item.ORANGE);
+
+        BigDecimal total = checkoutService.calculateTotal(items);
+
+        assertEquals(new BigDecimal("1.70"), total);
     }
 
     @Test
     void shouldReturnZeroForEmptyCart() {
-        //Given
-        List<Item> emptyList = emptyList();
+        List<Item> items = List.of();
 
-        //When
-        BigDecimal total = checkoutService.calculateTotal(emptyList);
+        BigDecimal total = checkoutService.calculateTotal(items);
 
-        //Then
-        assertEquals(BigDecimal.ZERO, total);
+        assertEquals(0, total.compareTo(BigDecimal.ZERO));
     }
 
 }
